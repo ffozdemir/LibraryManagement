@@ -3,6 +3,8 @@ package com.ffozdemir.librarymanagement.config;
 import com.ffozdemir.librarymanagement.entity.concretes.user.Role;
 import com.ffozdemir.librarymanagement.entity.concretes.user.User;
 import com.ffozdemir.librarymanagement.entity.enums.RoleType;
+import com.ffozdemir.librarymanagement.exception.ResourceNotFoundException;
+import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.repository.user.RoleRepository;
 import com.ffozdemir.librarymanagement.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,11 +53,16 @@ public class DataInitializer {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void initializeData() {
-		if (roleRepository.count() == 0) {
-			Role adminRole = roleRepository.save(Role.builder()
-						                                     .roleType(RoleType.ADMIN)
-						                                     .name(RoleType.ADMIN.getName())
-						                                     .build());
+		createDefaultRoles();
+		createAdminUser();
+	}
+
+	public void createDefaultRoles() {
+		if (!roleRepository.existsByRoleType(RoleType.ADMIN) && !roleRepository.existsByRoleType(RoleType.STAFF) && !roleRepository.existsByRoleType(RoleType.MEMBER)) {
+			roleRepository.save(Role.builder()
+						                    .roleType(RoleType.ADMIN)
+						                    .name(RoleType.ADMIN.getName())
+						                    .build());
 			roleRepository.save(Role.builder()
 						                    .roleType(RoleType.STAFF)
 						                    .name(RoleType.STAFF.getName())
@@ -64,21 +71,25 @@ public class DataInitializer {
 						                    .roleType(RoleType.MEMBER)
 						                    .name(RoleType.MEMBER.getName())
 						                    .build());
-			if (userRepository.count() == 0) {
-				User admin = User.builder()
-							             .firstName(adminFirstName)
-							             .lastName(adminLastName)
-							             .score(0)
-							             .address(adminAddress)
-							             .phone(adminPhoneNumber)
-							             .birthDate(LocalDate.parse(adminBirthDate))
-							             .email(adminEmail)
-							             .password(passwordEncoder.encode(adminPassword))
-							             .builtIn(true)
-							             .role(adminRole)
-							             .build();
-				userRepository.save(admin);
-			}
+		}
+	}
+
+	public void createAdminUser() {
+		if (!userRepository.existsByEmail(adminEmail)) {
+			User adminUser = User.builder()
+						                 .firstName(adminFirstName)
+						                 .lastName(adminLastName)
+						                 .score(0)
+						                 .address(adminAddress)
+						                 .phone(adminPhoneNumber)
+						                 .birthDate(LocalDate.parse(adminBirthDate))
+						                 .email(adminEmail)
+						                 .password(passwordEncoder.encode(adminPassword))
+						                 .role(roleRepository.findByRoleType(RoleType.ADMIN)
+									                       .orElseThrow(()->new ResourceNotFoundException(String.format(ErrorMessages.ROLE_NOT_FOUND, RoleType.ADMIN))))
+						                 .builtIn(true)
+						                 .build();
+			userRepository.save(adminUser);
 		}
 	}
 }
