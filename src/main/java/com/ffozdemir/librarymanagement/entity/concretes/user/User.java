@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
+@Table(name = "users")
 public class User {
 
 	@Id
