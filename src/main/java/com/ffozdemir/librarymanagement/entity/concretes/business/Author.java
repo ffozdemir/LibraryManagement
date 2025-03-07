@@ -3,6 +3,8 @@ package com.ffozdemir.librarymanagement.entity.concretes.business;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.LinkedHashSet;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,7 @@ public class Author {
 
 	@Column(nullable = false)
 	private boolean builtIn = false;
+
+	@OneToMany(mappedBy = "author")
+	private LinkedHashSet<Book> books;
 }
