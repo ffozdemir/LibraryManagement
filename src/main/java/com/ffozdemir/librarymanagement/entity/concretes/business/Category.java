@@ -3,6 +3,8 @@ package com.ffozdemir.librarymanagement.entity.concretes.business;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.LinkedHashSet;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,5 +25,8 @@ public class Category {
 
 	@Column(nullable = false)
 	private int sequence;
+
+	@OneToMany(mappedBy = "category")
+	private LinkedHashSet<Book> books;
 
 }
