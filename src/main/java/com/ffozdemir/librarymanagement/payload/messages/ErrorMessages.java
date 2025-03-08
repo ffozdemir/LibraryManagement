@@ -12,6 +12,8 @@ public class ErrorMessages {
     public static final String LOAN_NOT_FOUND = "Loan not found";
     public static final String LOAN_ALREADY_EXISTS = "Loan already exists";
     public static final String INVALID_LOAN_PERIOD = "Invalid loan period";
+    public static final String EMAIL_ALREADY_EXISTS = "Email already exists for another user";
+    public static final String PHONE_ALREADY_EXISTS = "Phone already exists for another user";
 
     private ErrorMessages() {
     }
