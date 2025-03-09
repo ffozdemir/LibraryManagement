@@ -7,6 +7,7 @@ import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.service.user.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(
             @RequestBody @Valid RegisterRequest registerRequest) {
-        return ResponseEntity.ok(authenticationService.register(registerRequest));
+        return new ResponseEntity<>(authenticationService.register(registerRequest), HttpStatus.CREATED);
     }
 
 }

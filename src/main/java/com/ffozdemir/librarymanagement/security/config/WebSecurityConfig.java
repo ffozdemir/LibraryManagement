@@ -28,7 +28,8 @@ public class WebSecurityConfig {
 	private final UserDetailsServiceImpl userDetailsService;
 	private final JwtAuthenticationEntryPoint unauthorizedHandler;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
-	private static final String[] AUTH_WHITELIST = {"/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/", "/index.html", "/images/**", "/css/**", "/js/**", "/auth/login", "/auth/register"};
+	private static final String[] AUTH_WHITELIST = {"/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/",
+			"/index.html", "/images/**", "/css/**", "/js/**", "/auth/**", "/auth/login", "/auth/register"};
 
 	@Bean
 	public SecurityFilterChain filterChain(

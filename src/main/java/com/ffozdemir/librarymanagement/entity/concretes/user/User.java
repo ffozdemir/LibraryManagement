@@ -50,7 +50,6 @@ public class User {
     private boolean builtIn = false;
 
     @ManyToOne
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Role role;
 
