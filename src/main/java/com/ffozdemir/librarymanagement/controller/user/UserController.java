@@ -50,5 +50,11 @@ public class UserController {
         return ResponseEntity.ok(userService.createUser(httpServletRequest, createUserRequest));
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<UserResponse> deleteUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.deleteUserById(id));
+    }
+
 
 }

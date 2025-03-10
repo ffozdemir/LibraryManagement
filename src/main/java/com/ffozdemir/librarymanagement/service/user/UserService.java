@@ -2,12 +2,12 @@ package com.ffozdemir.librarymanagement.service.user;
 
 import com.ffozdemir.librarymanagement.entity.concretes.user.User;
 import com.ffozdemir.librarymanagement.entity.enums.RoleType;
-import com.ffozdemir.librarymanagement.exception.ResourceNotFoundException;
 import com.ffozdemir.librarymanagement.payload.mappers.UserMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.payload.request.user.CreateUserRequest;
 import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.repository.user.UserRepository;
+import com.ffozdemir.librarymanagement.service.business.LoanService;
 import com.ffozdemir.librarymanagement.service.helper.MethodHelper;
 import com.ffozdemir.librarymanagement.service.helper.PageableHelper;
 import com.ffozdemir.librarymanagement.service.validator.UniquePropertyValidator;
@@ -27,6 +27,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final MethodHelper methodHelper;
     private final PageableHelper pageableHelper;
+    private final LoanService loanService;
 
 
     public User saveUser(
@@ -63,6 +64,19 @@ public class UserService {
             throw new AccessDeniedException(ErrorMessages.ACCESS_DENIED_MESSAGE);
         }
         return userMapper.mapUserToUserResponse(userRepository.save(newUser));
+    }
+
+    public UserResponse deleteUserById(Long id) {
+        User user = methodHelper.isUserExistById(id);
+        if (user.isBuiltIn()){
+            throw new AccessDeniedException(ErrorMessages.ACCESS_DENIED_MESSAGE);
+        }
+        //TODO check this method when loan service is completed
+        if (loanService.isUserHasLoan(id)) {
+            throw new AccessDeniedException(ErrorMessages.USER_HAS_LOAN_MESSAGE);
+        }
+        userRepository.delete(user);
+        return userMapper.mapUserToUserResponse(user);
     }
 }
 
