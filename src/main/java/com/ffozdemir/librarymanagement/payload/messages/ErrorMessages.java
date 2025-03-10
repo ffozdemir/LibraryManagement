@@ -2,7 +2,7 @@ package com.ffozdemir.librarymanagement.payload.messages;
 
 public class ErrorMessages {
 
-    public static final String USER_NOT_FOUND = "User not found with email: %s";
+    public static final String USER_NOT_FOUND_BY_EMAIL = "User not found with email: %s";
     public static final String ROLE_NOT_FOUND = "Role: %s not found";
     public static final String ROLE_ALREADY_EXISTS = "Role already exists";
     public static final String USER_ALREADY_EXISTS = "User already exists";
@@ -16,6 +16,9 @@ public class ErrorMessages {
     public static final String PHONE_ALREADY_EXISTS = "Phone already exists for another user";
     public static final String VALIDATION_ERROR_MESSAGE = "Validation error";
     public static final String INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error";
+    public static final String USER_NOT_FOUND_BY_ID = "User not found with id: %s";
+    public static final String ACCESS_DENIED_MESSAGE = "Access denied you do not have permission to access this resource";
+    public static final String BAD_REQUEST_MESSAGE = "Bad request you have sent invalid data";
 
     private ErrorMessages() {
     }

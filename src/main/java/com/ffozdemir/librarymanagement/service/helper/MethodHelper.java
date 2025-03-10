@@ -15,6 +15,11 @@ public class MethodHelper {
 	public User loadUserByEmail(
 				String email) {
 		return userRepository.findByEmail(email)
-					       .orElseThrow(()->new ResourceNotFoundException(String.format(ErrorMessages.USER_NOT_FOUND, email)));
+					       .orElseThrow(()->new ResourceNotFoundException(String.format(ErrorMessages.USER_NOT_FOUND_BY_EMAIL, email)));
+	}
+
+	public User isUserExistById(Long id) {
+		return userRepository.findById(id)
+					       .orElseThrow(()->new ResourceNotFoundException(String.format(ErrorMessages.USER_NOT_FOUND_BY_ID, id)));
 	}
 }
