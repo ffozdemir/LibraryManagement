@@ -4,7 +4,7 @@ import com.ffozdemir.librarymanagement.entity.concretes.user.User;
 import com.ffozdemir.librarymanagement.payload.mappers.UserMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.payload.request.authentication.LoginRequest;
-import com.ffozdemir.librarymanagement.payload.request.user.RegisterRequest;
+import com.ffozdemir.librarymanagement.payload.request.user.RegisterOrUpdateRequest;
 import com.ffozdemir.librarymanagement.payload.response.authentication.AuthenticationResponse;
 import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.security.jwt.JwtUtils;
@@ -65,9 +65,9 @@ public class AuthenticationService {
     }
 
     public UserResponse register(
-            RegisterRequest registerRequest) {
-        uniquePropertyValidator.checkDuplication(registerRequest.getEmail(), registerRequest.getPhone());
-        User userToSave = userMapper.mapRegisterRequestToUser(registerRequest);
+            RegisterOrUpdateRequest registerOrUpdateRequest) {
+        uniquePropertyValidator.checkDuplication(registerOrUpdateRequest.getEmail(), registerOrUpdateRequest.getPhone());
+        User userToSave = userMapper.mapRegisterRequestToUser(registerOrUpdateRequest);
         return userMapper.mapUserToUserResponse(userService.saveUser(userToSave));
     }
 }

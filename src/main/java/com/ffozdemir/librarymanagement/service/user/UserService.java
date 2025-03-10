@@ -5,6 +5,7 @@ import com.ffozdemir.librarymanagement.entity.enums.RoleType;
 import com.ffozdemir.librarymanagement.payload.mappers.UserMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.payload.request.user.CreateUserRequest;
+import com.ffozdemir.librarymanagement.payload.request.user.RegisterOrUpdateRequest;
 import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.repository.user.UserRepository;
 import com.ffozdemir.librarymanagement.service.business.LoanService;
@@ -28,6 +29,7 @@ public class UserService {
     private final MethodHelper methodHelper;
     private final PageableHelper pageableHelper;
     private final LoanService loanService;
+    private static final String ATTRIBUTE_EMAIL = "email";
 
 
     public User saveUser(
@@ -37,7 +39,7 @@ public class UserService {
     }
 
     public UserResponse getLoggedInUserInfo(HttpServletRequest httpServletRequest) {
-        String email = (String) httpServletRequest.getAttribute("email");
+        String email = (String) httpServletRequest.getAttribute(ATTRIBUTE_EMAIL);
         User user = methodHelper.loadUserByEmail(email);
         return userMapper.mapUserToUserResponse(user);
     }
@@ -54,7 +56,7 @@ public class UserService {
     }
 
     public UserResponse createUser(HttpServletRequest httpServletRequest, CreateUserRequest createUserRequest) {
-        String email = (String) httpServletRequest.getAttribute("email");
+        String email = (String) httpServletRequest.getAttribute(ATTRIBUTE_EMAIL);
         User user = methodHelper.loadUserByEmail(email);
         RoleType userRoleType = user.getRole().getRoleType();
         uniquePropertyValidator.checkDuplication(createUserRequest.getEmail(), createUserRequest.getPhone());
@@ -68,7 +70,7 @@ public class UserService {
 
     public UserResponse deleteUserById(Long id) {
         User user = methodHelper.isUserExistById(id);
-        if (user.isBuiltIn()){
+        if (user.isBuiltIn()) {
             throw new AccessDeniedException(ErrorMessages.ACCESS_DENIED_MESSAGE);
         }
         //TODO check this method when loan service is completed
@@ -77,6 +79,25 @@ public class UserService {
         }
         userRepository.delete(user);
         return userMapper.mapUserToUserResponse(user);
+    }
+
+    public UserResponse updateUserById(HttpServletRequest httpServletRequest, Long id,
+                                       RegisterOrUpdateRequest registerOrUpdateRequest) {
+        String email = (String) httpServletRequest.getAttribute(ATTRIBUTE_EMAIL);
+        User loggedInUser = methodHelper.loadUserByEmail(email);
+        RoleType loggedInUserRoleType = loggedInUser.getRole().getRoleType();
+        User updatedUser = methodHelper.isUserExistById(id);
+        RoleType updatedUserRole = updatedUser.getRole().getRoleType();
+        if (updatedUser.isBuiltIn()) {
+            throw new AccessDeniedException(ErrorMessages.ACCESS_DENIED_MESSAGE);
+        }
+        if (loggedInUserRoleType == RoleType.STAFF && updatedUserRole != RoleType.MEMBER) {
+            throw new AccessDeniedException(ErrorMessages.ACCESS_DENIED_MESSAGE);
+        }
+        uniquePropertyValidator.checkUniqueProperty(updatedUser, registerOrUpdateRequest);
+
+        User userToSave = userMapper.mapRegisterOrUpdateRequestToUser(registerOrUpdateRequest, updatedUser);
+        return userMapper.mapUserToUserResponse(userRepository.save(userToSave));
     }
 }
 

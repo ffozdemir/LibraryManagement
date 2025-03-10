@@ -10,5 +10,5 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @AllArgsConstructor
 @SuperBuilder
-public class RegisterRequest extends BaseUserRequest {
+public class RegisterOrUpdateRequest extends BaseUserRequest {
 }

@@ -1,7 +1,7 @@
 package com.ffozdemir.librarymanagement.controller.user;
 
 import com.ffozdemir.librarymanagement.payload.request.authentication.LoginRequest;
-import com.ffozdemir.librarymanagement.payload.request.user.RegisterRequest;
+import com.ffozdemir.librarymanagement.payload.request.user.RegisterOrUpdateRequest;
 import com.ffozdemir.librarymanagement.payload.response.authentication.AuthenticationResponse;
 import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.service.user.AuthenticationService;
@@ -29,8 +29,8 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(
-            @RequestBody @Valid RegisterRequest registerRequest) {
-        return new ResponseEntity<>(authenticationService.register(registerRequest), HttpStatus.CREATED);
+            @RequestBody @Valid RegisterOrUpdateRequest registerOrUpdateRequest) {
+        return new ResponseEntity<>(authenticationService.register(registerOrUpdateRequest), HttpStatus.CREATED);
     }
 
 }

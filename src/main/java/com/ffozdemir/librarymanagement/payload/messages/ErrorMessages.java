@@ -20,6 +20,7 @@ public class ErrorMessages {
     public static final String ACCESS_DENIED_MESSAGE = "Access denied you do not have permission to access this resource";
     public static final String BAD_REQUEST_MESSAGE = "Bad request you have sent invalid data";
     public static final String USER_HAS_LOAN_MESSAGE = "User has an active loan, please return the book before deleting the user";
+    public static final String PASSWORD_SHOULD_NOT_MATCHED = "Password should not be same as old password";
 
     private ErrorMessages() {
     }

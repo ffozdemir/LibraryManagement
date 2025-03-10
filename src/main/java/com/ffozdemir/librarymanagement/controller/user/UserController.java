@@ -1,6 +1,7 @@
 package com.ffozdemir.librarymanagement.controller.user;
 
 import com.ffozdemir.librarymanagement.payload.request.user.CreateUserRequest;
+import com.ffozdemir.librarymanagement.payload.request.user.RegisterOrUpdateRequest;
 import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,6 +55,13 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<UserResponse> deleteUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.deleteUserById(id));
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
+    @PutMapping("/users/{id}")
+    public ResponseEntity<UserResponse> updateUserById(HttpServletRequest httpServletRequest, @PathVariable Long id,
+                                                       @RequestBody RegisterOrUpdateRequest registerOrUpdateRequest) {
+        return ResponseEntity.ok(userService.updateUserById(httpServletRequest, id, registerOrUpdateRequest));
     }
 
 
