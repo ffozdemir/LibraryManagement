@@ -27,6 +27,8 @@ public class ErrorMessages {
     public static final String CATEGORY_NOT_FOUND_BY_ID = "Category not found with id %s";
     public static final String PUBLISHER_ALREADY_EXISTS_WITH_NAME = "Publisher already exists with name %s";
     public static final String PUBLISHER_NOT_DELETABLE_WITH_BOOKS = "Publisher not deletable, there are books associated with this publisher";
+    public static final String CATEGORY_ALREADY_EXISTS_WITH_NAME = "Category already exists with name %s";
+    public static final String CATEGORY_NOT_DELETABLE_WITH_BOOKS = "Category not deletable, there are books associated with this category";
 
     private ErrorMessages() {
     }
