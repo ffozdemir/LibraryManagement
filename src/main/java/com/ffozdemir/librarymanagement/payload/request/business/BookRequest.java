@@ -32,14 +32,14 @@ public class BookRequest {
     @NotNull(message = "Please enter publisher id")
     private Long publisherId;
 
-    @NotNull(message = "Please enter publish date")
+    @NotBlank(message = "Please enter publish date")
     @Pattern(regexp = "^\\d{4}$", message = "Publish date must be a 4-digit year")
     private String publishDate;
 
     @NotNull(message = "Please enter a category id")
     private Long categoryId;
 
-    @NotNull(message = "Please enter shelf code")
+    @NotBlank(message = "Please enter shelf code")
     @Pattern(regexp = "^[A-Z]{2}-\\d{3}$", message = "Shelf code format must be like 'XX-000' (e.g. WF-214)")
     private String shelfCode;
 

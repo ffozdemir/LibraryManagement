@@ -24,9 +24,6 @@ public class Category {
 	@Column(nullable = false)
 	private boolean builtIn = false;
 
-	@Column(nullable = false)
-	private int sequence;
-
 	@OneToMany(mappedBy = "category")
 	@JsonIgnore
 	private LinkedHashSet<Book> books;
