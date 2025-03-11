@@ -5,8 +5,10 @@ import com.ffozdemir.librarymanagement.payload.request.user.RegisterOrUpdateRequ
 import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +49,8 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
     @PostMapping("/users")
     public ResponseEntity<UserResponse> createUser(HttpServletRequest httpServletRequest,
-                                                   @RequestBody CreateUserRequest createUserRequest) {
-        return ResponseEntity.ok(userService.createUser(httpServletRequest, createUserRequest));
+                                                  @Valid @RequestBody CreateUserRequest createUserRequest) {
+       return new ResponseEntity<>(userService.createUser(httpServletRequest, createUserRequest), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('Admin')")
@@ -60,7 +62,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
     @PutMapping("/users/{id}")
     public ResponseEntity<UserResponse> updateUserById(HttpServletRequest httpServletRequest, @PathVariable Long id,
-                                                       @RequestBody RegisterOrUpdateRequest registerOrUpdateRequest) {
+                                                     @Valid @RequestBody RegisterOrUpdateRequest registerOrUpdateRequest) {
         return ResponseEntity.ok(userService.updateUserById(httpServletRequest, id, registerOrUpdateRequest));
     }
 

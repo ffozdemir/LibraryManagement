@@ -21,6 +21,10 @@ public class ErrorMessages {
     public static final String BAD_REQUEST_MESSAGE = "Bad request you have sent invalid data";
     public static final String USER_HAS_LOAN_MESSAGE = "User has an active loan, please return the book before deleting the user";
     public static final String PASSWORD_SHOULD_NOT_MATCHED = "Password should not be same as old password";
+    public static final String BOOK_ISBN_ALREADY_EXISTS = "Book with this ISBN %s already exists";
+    public static final String AUTHOR_NOT_FOUND_BY_ID = "Author not found with id %s";
+    public static final String PUBLISHER_NOT_FOUND_BY_ID = "Publisher not found with id %s";
+    public static final String CATEGORY_NOT_FOUND_BY_ID = "Category not found with id %s";
 
     private ErrorMessages() {
     }

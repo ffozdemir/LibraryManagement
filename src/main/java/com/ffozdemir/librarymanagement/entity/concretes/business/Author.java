@@ -1,5 +1,6 @@
 package com.ffozdemir.librarymanagement.entity.concretes.business;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,6 @@ public class Author {
 	private boolean builtIn = false;
 
 	@OneToMany(mappedBy = "author")
+	@JsonIgnore
 	private LinkedHashSet<Book> books;
 }
