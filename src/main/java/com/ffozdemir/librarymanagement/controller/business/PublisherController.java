@@ -23,11 +23,13 @@ public class PublisherController {
         return new ResponseEntity<>(publisherService.createPublisher(publisherRequest), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyAuthority('Admin','Staff', 'Member')")
     @GetMapping("/publishers/{id}")
     public ResponseEntity<PublisherResponse> getPublisherById(@PathVariable Long id) {
         return ResponseEntity.ok(publisherService.getPublisherResponse(id));
     }
 
+    @PreAuthorize("hasAnyAuthority('Admin','Staff', 'Member')")
     @GetMapping("/publishers")
     public ResponseEntity<Page<PublisherResponse>> getAllPublishers(
             @RequestParam(defaultValue = "0") int page,
