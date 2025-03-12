@@ -35,6 +35,8 @@ public class ErrorMessages {
     public static final String BOOK_CANNOT_BE_DELETED = "Book cannot be deleted, it is built-in or someone has borrowed it";
     public static final String INVALID_PUBLISH_DATE = "Publish date must be in a valid date format like yyyy(1995)";
     public static final String BOOK_SEARCH_PARAMETERS_NOT_PROVIDED = "At least one book search paramater should be given";
+    public static final String LOAN_NOT_FOUND_BY_ID = "Loan not found with id %s";
+    public static final String LOAN_NOT_BELONG_TO_USER = "Loan does not belong to user with id %s";
 
     private ErrorMessages() {
     }
