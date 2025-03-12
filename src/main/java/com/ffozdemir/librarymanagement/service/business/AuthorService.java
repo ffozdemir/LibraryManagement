@@ -2,12 +2,12 @@ package com.ffozdemir.librarymanagement.service.business;
 
 import com.ffozdemir.librarymanagement.entity.concretes.business.Author;
 import com.ffozdemir.librarymanagement.exception.ConflictException;
-import com.ffozdemir.librarymanagement.exception.ResourceNotFoundException;
 import com.ffozdemir.librarymanagement.payload.mappers.AuthorMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.payload.request.business.AuthorRequest;
 import com.ffozdemir.librarymanagement.payload.response.business.AuthorResponse;
 import com.ffozdemir.librarymanagement.repository.business.AuthorRepository;
+import com.ffozdemir.librarymanagement.service.helper.MethodHelper;
 import com.ffozdemir.librarymanagement.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,15 +21,12 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
     private final PageableHelper pageableHelper;
+    private final MethodHelper methodHelper;
 
-    public Author getAuthorById(Long authorId) {
-        return authorRepository.findById(authorId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format(ErrorMessages.AUTHOR_NOT_FOUND_BY_ID, authorId)));
-    }
+
 
     public AuthorResponse getAuthorResponse(Long id) {
-        return authorMapper.authorToAuthorResponse(getAuthorById(id));
+        return authorMapper.authorToAuthorResponse(methodHelper.getAuthorById(id));
     }
 
     public AuthorResponse createAuthor(AuthorRequest authorRequest) {
@@ -42,17 +39,16 @@ public class AuthorService {
     }
 
     public AuthorResponse deleteAuthor(Long id) {
-        Author author = getAuthorById(id);
+        Author author = methodHelper.getAuthorById(id);
         if (!author.getBooks().isEmpty()) {
-            throw new ConflictException(String.format(ErrorMessages.AUTHOR_NOT_DELETABLE_WITH_BOOKS,
-                    author.getName()));
+            throw new ConflictException(ErrorMessages.AUTHOR_NOT_DELETABLE_WITH_BOOKS);
         }
         authorRepository.delete(author);
         return authorMapper.authorToAuthorResponse(author);
     }
 
     public AuthorResponse updateAuthor(Long id, AuthorRequest authorRequest) {
-        Author author = getAuthorById(id);
+        Author author = methodHelper.getAuthorById(id);
         if (authorRepository.existsByNameEqualsIgnoreCaseAndIdNot(authorRequest.getName(), id)) {
             throw new ConflictException(String.format(ErrorMessages.AUTHOR_ALREADY_EXISTS_WITH_NAME,
                     authorRequest.getName()));

@@ -31,6 +31,10 @@ public class ErrorMessages {
     public static final String CATEGORY_NOT_DELETABLE_WITH_BOOKS = "Category not deletable, there are books associated with this category";
     public static final String AUTHOR_ALREADY_EXISTS_WITH_NAME = "Author already exists with name %s";
     public static final String AUTHOR_NOT_DELETABLE_WITH_BOOKS = "Author not deletable, there are books associated with this author";
+    public static final String BOOK_NOT_FOUND_BY_ID = "Book not found with id %s";
+    public static final String BOOK_CANNOT_BE_DELETED = "Book cannot be deleted, it is built-in or someone has borrowed it";
+    public static final String INVALID_PUBLISH_DATE = "Publish date must be in a valid date format like yyyy(1995)";
+    public static final String BOOK_SEARCH_PARAMETERS_NOT_PROVIDED = "At least one book search paramater should be given";
 
     private ErrorMessages() {
     }

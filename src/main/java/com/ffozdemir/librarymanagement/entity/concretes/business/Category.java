@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -24,8 +24,8 @@ public class Category {
 	@Column(nullable = false)
 	private boolean builtIn = false;
 
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonIgnore
-	private LinkedHashSet<Book> books;
+	private Set<Book> books;
 
 }
