@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class BookMapper {
+
+    private final AuthorMapper authorMapper;
+    private final PublisherMapper publisherMapper;
+    private final CategoryMapper categoryMapper;
+
     public Book bookRequestToBook(BookRequest bookRequest) {
         return Book.builder()
                 .name(bookRequest.getName())
@@ -24,11 +29,11 @@ public class BookMapper {
         return BookResponse.builder()
                 .name(book.getName())
                 .isbn(book.getIsbn())
-                .pageCount(book.getPageCount())//TODO: mappers will be integrated
-                .author(book.getAuthor()) //TODO: mappers will be integrated
-                .publisher(book.getPublisher())//TODO: mappers will be integrated
+                .pageCount(book.getPageCount())
+                .authorResponse(authorMapper.authorToAuthorResponse(book.getAuthor()))
+                .publisherResponse(publisherMapper.publisherToPublisherResponse(book.getPublisher()))
                 .publishDate(book.getPublishDate())
-                .category(book.getCategory())
+                .categoryResponse(categoryMapper.categoryToCategoryResponse(book.getCategory()))
                 .loanable(book.isLoanable())
                 .shelfCode(book.getShelfCode())
                 .active(book.isActive())
