@@ -24,7 +24,7 @@ public class BookService {
 
     public BookResponse createBook(BookRequest bookRequest) {
         validateBookIsbn(bookRequest.getIsbn());
-        Author author = authorService.isAuthorExists(bookRequest.getAuthorId());
+        Author author = authorService.getAuthorById(bookRequest.getAuthorId());
         Publisher publisher = publisherService.getPublisherById(bookRequest.getPublisherId());
         Category category = categoryService.isCategoryExists(bookRequest.getCategoryId());
         Book book = bookMapper.bookRequestToBook(bookRequest);
