@@ -5,7 +5,8 @@ import com.ffozdemir.librarymanagement.entity.concretes.user.User;
 import com.ffozdemir.librarymanagement.exception.ForbiddenException;
 import com.ffozdemir.librarymanagement.payload.mappers.LoanMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
-import com.ffozdemir.librarymanagement.payload.response.business.LoanResponse;
+import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForAdminAndStaff;
+import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForMember;
 import com.ffozdemir.librarymanagement.repository.business.LoanRepository;
 import com.ffozdemir.librarymanagement.service.helper.MethodHelper;
 import com.ffozdemir.librarymanagement.service.helper.PageableHelper;
@@ -28,7 +29,7 @@ public class LoanService {
         return loanRepository.existsByUser_Id(id);
     }
 
-    public LoanResponse getLoanResponseForAuthMember(HttpServletRequest httpServletRequest, Long id) {
+    public LoanResponseForMember getLoanResponseForAuthMember(HttpServletRequest httpServletRequest, Long id) {
         String email = (String) httpServletRequest.getAttribute("email");
         User authUser = methodHelper.loadUserByEmail(email);
         Loan loan = getLoanIfLoanBelongsToUser(id, authUser);
@@ -40,7 +41,7 @@ public class LoanService {
                 .orElseThrow(() -> new ForbiddenException(String.format(ErrorMessages.LOAN_NOT_BELONG_TO_USER, loanId)));
     }
 
-    public Page<LoanResponse> getAllLoanResponseForAuthMember(HttpServletRequest httpServletRequest, int page, int size, String sort, String direction) {
+    public Page<LoanResponseForMember> getAllLoanResponseForAuthMember(HttpServletRequest httpServletRequest, int page, int size, String sort, String direction) {
         String email = (String) httpServletRequest.getAttribute("email");
         User authUser = methodHelper.loadUserByEmail(email);
         Pageable pageable = pageableHelper.getPageable(page, size, sort, direction);
@@ -48,21 +49,22 @@ public class LoanService {
         return loans.map(loanMapper::loanToLoanResponse);
     }
 
-    public Page<LoanResponse> getAllLoanResponseByUserId(Long id, int page, int size, String sort, String direction) {
+    public Page<LoanResponseForAdminAndStaff> getAllLoanResponseForAdminAndStaffByUserId(Long id, int page, int size, String sort, String direction) {
         Pageable pageable = pageableHelper.getPageable(page, size, sort, direction);
         Page<Loan> loans = loanRepository.findAllByUser_Id(id, pageable);
-        return loans.map(loanMapper::loanToLoanResponse);
+        return loans.map(loanMapper::loanToLoanResponseForAdminAndStaff);
     }
 
 
-    public Page<LoanResponse> getAllLoanResponseByBookId(Long id, int page, int size, String sort, String direction) {
+    public Page<LoanResponseForAdminAndStaff> getAllLoanResponseForAdminAndStaffByBookId(Long id, int page, int size, String sort,
+                                                                                         String direction) {
         Pageable pageable = pageableHelper.getPageable(page, size, sort, direction);
         Page<Loan> loans = loanRepository.findAllByBook_Id(id, pageable);
-        return loans.map(loanMapper::loanToLoanResponse);
+        return loans.map(loanMapper::loanToLoanResponseForAdminAndStaff);
     }
 
-    public LoanResponse getLoanResponseByLoanId(Long id) {
+    public LoanResponseForAdminAndStaff getLoanResponseForAdminAndStaffByLoanId(Long id) {
         Loan loan = methodHelper.getLoanById(id);
-        return loanMapper.loanToLoanResponse(loan);
+        return loanMapper.loanToLoanResponseForAdminAndStaff(loan);
     }
 }
