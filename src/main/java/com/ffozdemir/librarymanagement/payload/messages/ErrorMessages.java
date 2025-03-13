@@ -19,7 +19,11 @@ public class ErrorMessages {
     public static final String USER_NOT_FOUND_BY_ID = "User not found with id: %s";
     public static final String ACCESS_DENIED_MESSAGE = "Access denied you do not have permission to access this resource";
     public static final String BAD_REQUEST_MESSAGE = "Bad request you have sent invalid data";
-    public static final String USER_HAS_LOAN_MESSAGE = "User has an active loan, please return the book before deleting the user";
+    public static final String USER_CAN_NOT_BE_DELETED_HAS_LOAN_MESSAGE = "User has an active loan, please return the" +
+            " " +
+            "book before deleting the user";
+    public static final String USER_HAS_LOAN_AND_NOT_RETURNED_BOOK = "User has an active loan and not returned the " +
+            "book, please return the book before borrowing another book";
     public static final String PASSWORD_SHOULD_NOT_MATCHED = "Password should not be same as old password";
     public static final String BOOK_ISBN_ALREADY_EXISTS = "Book with this ISBN %s already exists";
     public static final String AUTHOR_NOT_FOUND_BY_ID = "Author not found with id %s";
@@ -37,6 +41,8 @@ public class ErrorMessages {
     public static final String BOOK_SEARCH_PARAMETERS_NOT_PROVIDED = "At least one book search paramater should be given";
     public static final String LOAN_NOT_FOUND_BY_ID = "Loan not found with id %s";
     public static final String LOAN_NOT_BELONG_TO_USER = "Loan does not belong to user with id %s";
+    public static final String BOOK_NOT_AVAILABLE = "Book with id %s is not available for loan";
+    public static final String USER_BORROW_LIMIT_EXCEEDED = "User borrow limit exceeded";
 
     private ErrorMessages() {
     }

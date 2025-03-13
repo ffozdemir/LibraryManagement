@@ -1,9 +1,11 @@
 package com.ffozdemir.librarymanagement.controller.business;
 
+import com.ffozdemir.librarymanagement.payload.request.business.CreateLoanRequest;
 import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForAdminAndStaff;
 import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForMember;
 import com.ffozdemir.librarymanagement.service.business.LoanService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -60,10 +62,10 @@ public class LoanController {
         return ResponseEntity.ok(loanService.getLoanResponseForAdminAndStaffByLoanId(id));
     }
 
-    /*2+ 5 book, 20 days
-1 4 book, 15 days
-0 3 book, 10 days
--1 2 book, 6 days
--2+ 1 book, 3 days*/
+    @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
+    @PostMapping("/loans")
+    public ResponseEntity<LoanResponseForAdminAndStaff> createLoan(@Valid @RequestBody CreateLoanRequest createLoanRequest) {
+        return ResponseEntity.ok(loanService.createLoan(createLoanRequest));
+    }
 
 }

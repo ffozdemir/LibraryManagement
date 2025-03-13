@@ -73,9 +73,8 @@ public class UserService {
         if (user.isBuiltIn()) {
             throw new AccessDeniedException(ErrorMessages.ACCESS_DENIED_MESSAGE);
         }
-        //TODO check this method when loan service is completed
         if (loanService.isUserHasLoan(id)) {
-            throw new AccessDeniedException(ErrorMessages.USER_HAS_LOAN_MESSAGE);
+            throw new AccessDeniedException(ErrorMessages.USER_CAN_NOT_BE_DELETED_HAS_LOAN_MESSAGE);
         }
         userRepository.delete(user);
         return userMapper.mapUserToUserResponse(user);

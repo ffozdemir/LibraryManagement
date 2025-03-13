@@ -1,10 +1,16 @@
 package com.ffozdemir.librarymanagement.payload.mappers;
 
+import com.ffozdemir.librarymanagement.entity.concretes.business.Book;
 import com.ffozdemir.librarymanagement.entity.concretes.business.Loan;
+import com.ffozdemir.librarymanagement.entity.concretes.user.User;
+import com.ffozdemir.librarymanagement.payload.request.business.CreateLoanRequest;
 import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForAdminAndStaff;
 import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForMember;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -34,4 +40,13 @@ public class LoanMapper {
                 .build();
     }
 
+    public Loan createLoanRequestToLoan(@Valid CreateLoanRequest createLoanRequest, User user, Book book, Integer dayLimit) {
+        return Loan.builder()
+                .user(user)
+                .book(book)
+                .loanDate(LocalDateTime.now())
+                .expireDate(LocalDateTime.now().plusDays(dayLimit))
+                .notes(createLoanRequest.getNotes())
+                .build();
+    }
 }
