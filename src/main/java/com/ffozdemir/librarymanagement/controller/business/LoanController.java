@@ -60,4 +60,10 @@ public class LoanController {
         return ResponseEntity.ok(loanService.getLoanResponseForAdminAndStaffByLoanId(id));
     }
 
+    /*2+ 5 book, 20 days
+1 4 book, 15 days
+0 3 book, 10 days
+-1 2 book, 6 days
+-2+ 1 book, 3 days*/
+
 }

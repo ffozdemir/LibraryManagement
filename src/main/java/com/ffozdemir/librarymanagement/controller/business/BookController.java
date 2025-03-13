@@ -31,11 +31,11 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBookResponseById(id));
     }
 
-    /*@PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping("/books/{id}")
     public ResponseEntity<BookResponse> deleteBook(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.deleteBook(id));
-    }*/
+    }
 
     @PreAuthorize("hasAuthority('Admin')")
     @PutMapping("/books/{id}")

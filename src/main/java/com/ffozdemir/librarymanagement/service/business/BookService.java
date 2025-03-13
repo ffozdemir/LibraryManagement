@@ -73,14 +73,14 @@ public class BookService {
      * Retrieves books based on various filter parameters with pagination support.
      *
      * @param httpServletRequest HTTP request containing user information in headers
-     * @param q Search query to filter books by name, author name, ISBN, or publisher name
-     * @param categoryId Filter books by specific category ID
-     * @param authorId Filter books by specific author ID
-     * @param publisherId Filter books by specific publisher ID
-     * @param page Page number for pagination (zero-based)
-     * @param size Number of items per page
-     * @param sortBy Field to sort results by
-     * @param type Sort direction ("asc" or "desc")
+     * @param q                  Search query to filter books by name, author name, ISBN, or publisher name
+     * @param categoryId         Filter books by specific category ID
+     * @param authorId           Filter books by specific author ID
+     * @param publisherId        Filter books by specific publisher ID
+     * @param page               Page number for pagination (zero-based)
+     * @param size               Number of items per page
+     * @param sortBy             Field to sort results by
+     * @param type               Sort direction ("asc" or "desc")
      * @return Page of BookResponse objects containing filtered book data
      * @throws BadRequestException if no search parameters are provided
      */
@@ -104,12 +104,12 @@ public class BookService {
      * Helper method that selects the appropriate repository method based on provided parameters.
      * For admin users, returns all matching books. For non-admin users, returns only active books.
      *
-     * @param q Search query text
-     * @param categoryId Category identifier
-     * @param authorId Author identifier
+     * @param q           Search query text
+     * @param categoryId  Category identifier
+     * @param authorId    Author identifier
      * @param publisherId Publisher identifier
-     * @param pageable Pagination information
-     * @param isAdmin Flag indicating if the current user has admin privileges
+     * @param pageable    Pagination information
+     * @param isAdmin     Flag indicating if the current user has admin privileges
      * @return Page of Book entities matching the specified criteria
      */
     private Page<Book> getBooksBasedOnParameters(String q, Long categoryId, Long authorId, Long publisherId, Pageable pageable, boolean isAdmin) {
@@ -132,14 +132,12 @@ public class BookService {
         }
     }
 
-    /*@Transactional
     public BookResponse deleteBook(Long id) {
         Book book = getBookById(id);
-        if (!book.isLoanable() || book.isBuiltIn()) {
+        if (methodHelper.isBookRelatedToLoan(id)) {
             throw new BadRequestException(ErrorMessages.BOOK_CANNOT_BE_DELETED);
         }
-
         bookRepository.delete(book);
         return bookMapper.bookToBookResponse(book);
-    }*/
+    }
 }

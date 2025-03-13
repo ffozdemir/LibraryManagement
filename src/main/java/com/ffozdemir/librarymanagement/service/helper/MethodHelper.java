@@ -57,5 +57,9 @@ public class MethodHelper {
 				.orElseThrow(() -> new ResourceNotFoundException(String.format(ErrorMessages.LOAN_NOT_FOUND_BY_ID, loanId)));
 	}
 
+	public boolean isBookRelatedToLoan(Long bookId) {
+		return loanRepository.existsByBook_Id((bookId));
+	}
+
 
 }
