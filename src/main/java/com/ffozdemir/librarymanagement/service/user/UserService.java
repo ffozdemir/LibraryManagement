@@ -2,10 +2,12 @@ package com.ffozdemir.librarymanagement.service.user;
 
 import com.ffozdemir.librarymanagement.entity.concretes.user.User;
 import com.ffozdemir.librarymanagement.entity.enums.RoleType;
+import com.ffozdemir.librarymanagement.payload.mappers.LoanMapper;
 import com.ffozdemir.librarymanagement.payload.mappers.UserMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.payload.request.user.CreateUserRequest;
 import com.ffozdemir.librarymanagement.payload.request.user.RegisterOrUpdateRequest;
+import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForMember;
 import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.repository.user.UserRepository;
 import com.ffozdemir.librarymanagement.service.business.LoanService;
@@ -29,6 +31,7 @@ public class UserService {
     private final MethodHelper methodHelper;
     private final PageableHelper pageableHelper;
     private final LoanService loanService;
+    private final LoanMapper loanMapper;
     private static final String ATTRIBUTE_EMAIL = "email";
 
 
@@ -97,6 +100,11 @@ public class UserService {
 
         User userToSave = userMapper.mapRegisterOrUpdateRequestToUser(registerOrUpdateRequest, updatedUser);
         return userMapper.mapUserToUserResponse(userRepository.save(userToSave));
+    }
+
+    public Page<LoanResponseForMember> getAllUserLoans(HttpServletRequest httpServletRequest, int page, int size, String sort
+            , String direction) {
+        return loanService.getAllLoanResponseForAuthMember(httpServletRequest, page, size, sort, direction);
     }
 }
 

@@ -7,6 +7,7 @@ import com.ffozdemir.librarymanagement.exception.ForbiddenException;
 import com.ffozdemir.librarymanagement.payload.mappers.LoanMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.payload.request.business.CreateLoanRequest;
+import com.ffozdemir.librarymanagement.payload.request.business.UpdateLoanRequest;
 import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForAdminAndStaff;
 import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForMember;
 import com.ffozdemir.librarymanagement.repository.business.LoanRepository;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -94,6 +96,33 @@ public class LoanService {
         List<Loan> activeLoans = loanRepository.findAllByUser_IdAndReturnDateIsNull(userId);
         if (activeLoans.size() >= borrowLimits.get("bookLimit")) {
             throw new ForbiddenException(ErrorMessages.USER_BORROW_LIMIT_EXCEEDED);
+        }
+    }
+
+    @Transactional
+    public LoanResponseForAdminAndStaff updateLoanById(Long id, UpdateLoanRequest updateLoanRequest) {
+        Loan loan = methodHelper.getLoanById(id);
+        Book book = loan.getBook();
+        loan.setNotes(updateLoanRequest.getNotes());
+        if (updateLoanRequest.getExpireDate() != null) {
+            loan.setExpireDate(updateLoanRequest.getExpireDate());
+        }
+        if (updateLoanRequest.getReturnDate() != null) {
+            book.setLoanable(true);
+            loan.setReturnDate(updateLoanRequest.getReturnDate());
+            updateUserScore(loan, updateLoanRequest.getReturnDate());
+        }
+        return loanMapper.loanToLoanResponseForAdminAndStaff(loanRepository.save(loan));
+    }
+
+    private void updateUserScore(Loan loan, LocalDateTime returnDate) {
+        User user = loan.getUser();
+        if (loan.getExpireDate() != null) {
+            if (returnDate.isAfter(loan.getExpireDate())) {
+                user.setScore(user.getScore() - 1);
+            } else if (returnDate.isBefore(loan.getExpireDate())) {
+                user.setScore(user.getScore() + 1);
+            }
         }
     }
 }

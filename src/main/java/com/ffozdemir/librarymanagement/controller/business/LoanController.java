@@ -1,6 +1,7 @@
 package com.ffozdemir.librarymanagement.controller.business;
 
 import com.ffozdemir.librarymanagement.payload.request.business.CreateLoanRequest;
+import com.ffozdemir.librarymanagement.payload.request.business.UpdateLoanRequest;
 import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForAdminAndStaff;
 import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForMember;
 import com.ffozdemir.librarymanagement.service.business.LoanService;
@@ -66,6 +67,13 @@ public class LoanController {
     @PostMapping("/loans")
     public ResponseEntity<LoanResponseForAdminAndStaff> createLoan(@Valid @RequestBody CreateLoanRequest createLoanRequest) {
         return ResponseEntity.ok(loanService.createLoan(createLoanRequest));
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
+    @PutMapping("/loans/{id}")
+    public ResponseEntity<LoanResponseForAdminAndStaff> updateLoanById(@PathVariable Long id,
+                                                                        @Valid @RequestBody UpdateLoanRequest updateLoanRequest) {
+        return ResponseEntity.ok(loanService.updateLoanById(id, updateLoanRequest));
     }
 
 }

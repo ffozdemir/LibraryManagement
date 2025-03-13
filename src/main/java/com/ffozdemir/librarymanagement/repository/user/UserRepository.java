@@ -1,6 +1,7 @@
 package com.ffozdemir.librarymanagement.repository.user;
 
 import com.ffozdemir.librarymanagement.entity.concretes.user.User;
+import com.ffozdemir.librarymanagement.entity.enums.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 				String email);
 
     boolean existsByPhone(String phone);
+
+    Long countByRole_RoleType(RoleType roleRoleType);
 }

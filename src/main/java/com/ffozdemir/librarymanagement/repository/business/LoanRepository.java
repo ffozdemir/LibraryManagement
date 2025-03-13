@@ -27,4 +27,8 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     boolean existsByUser_IdAndReturnDateIsNullAndExpireDateBefore(Long userId, LocalDateTime expireDateBefore);
 
     List<Loan> findAllByUser_IdAndReturnDateIsNull(Long userId);
+
+    Long countByReturnDateIsNull();
+
+    Long countByExpireDateBefore(LocalDateTime expireDateBefore);
 }

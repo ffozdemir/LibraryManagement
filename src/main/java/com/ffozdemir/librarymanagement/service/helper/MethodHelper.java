@@ -2,6 +2,7 @@ package com.ffozdemir.librarymanagement.service.helper;
 
 import com.ffozdemir.librarymanagement.entity.concretes.business.*;
 import com.ffozdemir.librarymanagement.entity.concretes.user.User;
+import com.ffozdemir.librarymanagement.entity.enums.RoleType;
 import com.ffozdemir.librarymanagement.exception.ResourceNotFoundException;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.repository.business.*;
@@ -98,4 +99,35 @@ public class MethodHelper {
     }
 
 
+    public Long getTotalBooks() {
+        return bookRepository.count();
+    }
+
+    public Long getTotalAuthors() {
+        return authorRepository.count();
+    }
+
+    public Long getTotalPublishers() {
+        return publisherRepository.count();
+    }
+
+    public Long getTotalCategories() {
+        return categoryRepository.count();
+    }
+
+    public Long getTotalLoans() {
+        return loanRepository.count();
+    }
+
+    public Long getUnreturnedBooks() {
+        return loanRepository.countByReturnDateIsNull();
+    }
+
+    public Long getExpiredBooks() {
+        return loanRepository.countByExpireDateBefore(LocalDateTime.now());
+    }
+
+    public Long getTotalMembers() {
+        return userRepository.countByRole_RoleType(RoleType.MEMBER);
+    }
 }

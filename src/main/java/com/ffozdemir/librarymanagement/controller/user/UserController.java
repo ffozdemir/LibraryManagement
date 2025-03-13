@@ -2,6 +2,7 @@ package com.ffozdemir.librarymanagement.controller.user;
 
 import com.ffozdemir.librarymanagement.payload.request.user.CreateUserRequest;
 import com.ffozdemir.librarymanagement.payload.request.user.RegisterOrUpdateRequest;
+import com.ffozdemir.librarymanagement.payload.response.business.LoanResponseForMember;
 import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,9 +27,15 @@ public class UserController {
         return ResponseEntity.ok(userService.getLoggedInUserInfo(httpServletRequest));
     }
 
-    //TODO: Uncomment and implement the following method when needed
-    /*@PreAuthorize("hasAnyAuthority('Admin', 'Staff', 'Member')")
-    @GetMapping("/user/loan")*/
+    @PreAuthorize("hasAnyAuthority('Admin', 'Staff', 'Member')")
+    @GetMapping("/user/loans")
+    public ResponseEntity<Page<LoanResponseForMember>> getAllUserLoans(HttpServletRequest httpServletRequest,
+                                                                       @RequestParam(defaultValue = "0") int page,
+                                                                       @RequestParam(defaultValue = "10") int size,
+                                                                       @RequestParam(defaultValue = "id") String sort,
+                                                                       @RequestParam(defaultValue = "asc") String direction) {
+        return ResponseEntity.ok(userService.getAllUserLoans(httpServletRequest, page, size, sort, direction));
+    }
 
     @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
     @GetMapping("/users")
@@ -49,8 +56,8 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
     @PostMapping("/users")
     public ResponseEntity<UserResponse> createUser(HttpServletRequest httpServletRequest,
-                                                  @Valid @RequestBody CreateUserRequest createUserRequest) {
-       return new ResponseEntity<>(userService.createUser(httpServletRequest, createUserRequest), HttpStatus.CREATED);
+                                                   @Valid @RequestBody CreateUserRequest createUserRequest) {
+        return new ResponseEntity<>(userService.createUser(httpServletRequest, createUserRequest), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('Admin')")
@@ -62,9 +69,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
     @PutMapping("/users/{id}")
     public ResponseEntity<UserResponse> updateUserById(HttpServletRequest httpServletRequest, @PathVariable Long id,
-                                                     @Valid @RequestBody RegisterOrUpdateRequest registerOrUpdateRequest) {
+                                                       @Valid @RequestBody RegisterOrUpdateRequest registerOrUpdateRequest) {
         return ResponseEntity.ok(userService.updateUserById(httpServletRequest, id, registerOrUpdateRequest));
     }
-
-
 }
