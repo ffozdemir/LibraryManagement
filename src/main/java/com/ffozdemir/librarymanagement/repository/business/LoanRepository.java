@@ -31,4 +31,5 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     Long countByReturnDateIsNull();
 
     Long countByExpireDateBefore(LocalDateTime expireDateBefore);
+
 }

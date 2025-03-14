@@ -143,4 +143,10 @@ public class MethodHelper {
         Page<Book> books = bookRepository.findMostBorrowedBooks(amount, pageable);
         return books.map(bookMapper::bookToBookResponse);
     }
+
+    public Page<BookResponse> getUnreturnedBooksPage(int page, int size, String sort, String direction) {
+        Pageable pageable = pageableHelper.getPageable(page, size, sort, direction);
+        Page<Book> books = bookRepository.findAllByLoans_ReturnDateIsNull(pageable);
+        return books.map(bookMapper::bookToBookResponse);
+    }
 }

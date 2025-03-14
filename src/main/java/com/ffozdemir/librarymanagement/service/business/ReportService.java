@@ -30,4 +30,8 @@ public class ReportService {
     public Page<BookResponse> getMostPopularBooks(int amount, int page, int size) {
         return methodHelper.getMostPopularBooks(amount, page, size);
     }
+
+    public Page<BookResponse> getUnreturnedBooks(int page, int size, String sort, String direction) {
+        return methodHelper.getUnreturnedBooksPage(page, size, sort, direction);
+    }
 }

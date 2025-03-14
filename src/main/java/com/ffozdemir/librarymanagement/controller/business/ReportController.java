@@ -34,5 +34,14 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getMostPopularBooks(amount, page, size));
     }
 
+    @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
+    @GetMapping("/report/unreturned-books")
+    public ResponseEntity<Page<BookResponse>> getUnreturnedBooks(@RequestParam(defaultValue = "0") int page,
+                                                                 @RequestParam(defaultValue = "10") int size,
+                                                                 @RequestParam(defaultValue = "id") String sort,
+                                                                 @RequestParam(defaultValue = "asc") String direction) {
+        return ResponseEntity.ok(reportService.getUnreturnedBooks(page, size, sort, direction));
+    }
+
 
 }

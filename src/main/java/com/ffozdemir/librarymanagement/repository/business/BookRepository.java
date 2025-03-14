@@ -40,4 +40,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             nativeQuery = true)
     Page<Book> findMostBorrowedBooks(@Param("amount") int amount, Pageable pageable);
 
+    @Query("SELECT DISTINCT b FROM Book b JOIN Loan l ON b.id = l.book.id WHERE l.returnDate IS NULL")
+    Page<Book> findAllByLoans_ReturnDateIsNull(Pageable pageable);
 }
