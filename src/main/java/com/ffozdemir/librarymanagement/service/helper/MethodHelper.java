@@ -4,10 +4,14 @@ import com.ffozdemir.librarymanagement.entity.concretes.business.*;
 import com.ffozdemir.librarymanagement.entity.concretes.user.User;
 import com.ffozdemir.librarymanagement.entity.enums.RoleType;
 import com.ffozdemir.librarymanagement.exception.ResourceNotFoundException;
+import com.ffozdemir.librarymanagement.payload.mappers.BookMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
+import com.ffozdemir.librarymanagement.payload.response.business.BookResponse;
 import com.ffozdemir.librarymanagement.repository.business.*;
 import com.ffozdemir.librarymanagement.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -22,6 +26,8 @@ public class MethodHelper {
     private final CategoryRepository categoryRepository;
     private final LoanRepository loanRepository;
     private final BookRepository bookRepository;
+    private final PageableHelper pageableHelper;
+    private final BookMapper bookMapper;
 
     public User loadUserByEmail(
             String email) {
@@ -129,5 +135,12 @@ public class MethodHelper {
 
     public Long getTotalMembers() {
         return userRepository.countByRole_RoleType(RoleType.MEMBER);
+    }
+
+
+    public Page<BookResponse> getMostPopularBooks(int amount, int page, int size) {
+        Pageable pageable = pageableHelper.getPageable(page, size, "loanCount", "desc");
+        Page<Book> books = bookRepository.findMostBorrowedBooks(amount, pageable);
+        return books.map(bookMapper::bookToBookResponse);
     }
 }

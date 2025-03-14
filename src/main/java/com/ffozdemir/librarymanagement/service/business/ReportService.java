@@ -1,8 +1,10 @@
 package com.ffozdemir.librarymanagement.service.business;
 
+import com.ffozdemir.librarymanagement.payload.response.business.BookResponse;
 import com.ffozdemir.librarymanagement.payload.response.business.ReportResponse;
 import com.ffozdemir.librarymanagement.service.helper.MethodHelper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,5 +24,10 @@ public class ReportService {
                 .expiredBooks(methodHelper.getExpiredBooks())
                 .totalMembers(methodHelper.getTotalMembers())
                 .build();
+    }
+
+
+    public Page<BookResponse> getMostPopularBooks(int amount, int page, int size) {
+        return methodHelper.getMostPopularBooks(amount, page, size);
     }
 }
