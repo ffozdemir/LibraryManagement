@@ -2,6 +2,7 @@ package com.ffozdemir.librarymanagement.service.business;
 
 import com.ffozdemir.librarymanagement.payload.response.business.BookResponse;
 import com.ffozdemir.librarymanagement.payload.response.business.ReportResponse;
+import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.service.helper.MethodHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,5 +38,9 @@ public class ReportService {
 
     public Page<BookResponse> getExpiredBooks(int page, int size, String sort, String direction) {
         return methodHelper.getExpiredBooksPage(page, size, sort, direction);
+    }
+
+    public Page<UserResponse> getMostBorrowers(int page, int size) {
+        return methodHelper.getMostBorrowers(page, size);
     }
 }

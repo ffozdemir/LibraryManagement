@@ -5,8 +5,10 @@ import com.ffozdemir.librarymanagement.entity.concretes.user.User;
 import com.ffozdemir.librarymanagement.entity.enums.RoleType;
 import com.ffozdemir.librarymanagement.exception.ResourceNotFoundException;
 import com.ffozdemir.librarymanagement.payload.mappers.BookMapper;
+import com.ffozdemir.librarymanagement.payload.mappers.UserMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.payload.response.business.BookResponse;
+import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.repository.business.*;
 import com.ffozdemir.librarymanagement.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class MethodHelper {
     private final BookRepository bookRepository;
     private final PageableHelper pageableHelper;
     private final BookMapper bookMapper;
+    private final UserMapper userMapper;
 
     public User loadUserByEmail(
             String email) {
@@ -154,5 +157,11 @@ public class MethodHelper {
         Pageable pageable = pageableHelper.getPageable(page, size, sort, direction);
         Page<Book> books = bookRepository.findAllByExpireDateBeforeAndNotReturned(LocalDateTime.now(), pageable);
         return books.map(bookMapper::bookToBookResponse);
+    }
+
+    public Page<UserResponse> getMostBorrowers(int page, int size) {
+        Pageable pageable = pageableHelper.getPageable(page, size, "loanCount", "desc");
+        Page<User> users = userRepository.findAllMostBorrowers(pageable);
+        return users.map(userMapper::mapUserToUserResponse);
     }
 }

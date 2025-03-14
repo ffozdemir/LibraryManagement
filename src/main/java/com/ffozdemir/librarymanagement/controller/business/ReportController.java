@@ -2,6 +2,7 @@ package com.ffozdemir.librarymanagement.controller.business;
 
 import com.ffozdemir.librarymanagement.payload.response.business.BookResponse;
 import com.ffozdemir.librarymanagement.payload.response.business.ReportResponse;
+import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.service.business.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,6 +51,13 @@ public class ReportController {
                                                               @RequestParam(defaultValue = "expireDate") String sort,
                                                               @RequestParam(defaultValue = "desc") String direction) {
         return ResponseEntity.ok(reportService.getExpiredBooks(page, size, sort, direction));
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
+    @GetMapping("/report/most-borrowers")
+    public ResponseEntity<Page<UserResponse>> getMostBorrowers(@RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "20") int size) {
+        return ResponseEntity.ok(reportService.getMostBorrowers(page, size));
     }
 
 
