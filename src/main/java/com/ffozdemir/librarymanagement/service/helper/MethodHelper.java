@@ -149,4 +149,10 @@ public class MethodHelper {
         Page<Book> books = bookRepository.findAllByLoans_ReturnDateIsNull(pageable);
         return books.map(bookMapper::bookToBookResponse);
     }
+
+    public Page<BookResponse> getExpiredBooksPage(int page, int size, String sort, String direction) {
+        Pageable pageable = pageableHelper.getPageable(page, size, sort, direction);
+        Page<Book> books = bookRepository.findAllByExpireDateBeforeAndNotReturned(LocalDateTime.now(), pageable);
+        return books.map(bookMapper::bookToBookResponse);
+    }
 }

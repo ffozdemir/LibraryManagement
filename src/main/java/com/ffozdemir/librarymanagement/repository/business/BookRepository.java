@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
@@ -42,4 +44,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT DISTINCT b FROM Book b JOIN Loan l ON b.id = l.book.id WHERE l.returnDate IS NULL")
     Page<Book> findAllByLoans_ReturnDateIsNull(Pageable pageable);
+
+    @Query("SELECT DISTINCT b FROM Book b JOIN Loan l ON b.id = l.book.id WHERE l.expireDate < :now and l.returnDate is null")
+    Page<Book> findAllByExpireDateBeforeAndNotReturned(LocalDateTime now, Pageable pageable);
 }

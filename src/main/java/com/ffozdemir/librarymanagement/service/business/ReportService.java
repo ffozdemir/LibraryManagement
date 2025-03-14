@@ -34,4 +34,8 @@ public class ReportService {
     public Page<BookResponse> getUnreturnedBooks(int page, int size, String sort, String direction) {
         return methodHelper.getUnreturnedBooksPage(page, size, sort, direction);
     }
+
+    public Page<BookResponse> getExpiredBooks(int page, int size, String sort, String direction) {
+        return methodHelper.getExpiredBooksPage(page, size, sort, direction);
+    }
 }

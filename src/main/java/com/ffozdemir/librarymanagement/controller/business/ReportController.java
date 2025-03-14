@@ -29,7 +29,7 @@ public class ReportController {
     @GetMapping("/report/most-popular-books")
     public ResponseEntity<Page<BookResponse>> getMostPopularBooks(@RequestParam int amount,
                                                                   @RequestParam(defaultValue = "0") int page,
-                                                                  @RequestParam(defaultValue = "10") int size
+                                                                  @RequestParam(defaultValue = "20") int size
     ) {
         return ResponseEntity.ok(reportService.getMostPopularBooks(amount, page, size));
     }
@@ -37,10 +37,19 @@ public class ReportController {
     @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
     @GetMapping("/report/unreturned-books")
     public ResponseEntity<Page<BookResponse>> getUnreturnedBooks(@RequestParam(defaultValue = "0") int page,
-                                                                 @RequestParam(defaultValue = "10") int size,
-                                                                 @RequestParam(defaultValue = "id") String sort,
-                                                                 @RequestParam(defaultValue = "asc") String direction) {
+                                                                 @RequestParam(defaultValue = "20") int size,
+                                                                 @RequestParam(defaultValue = "expireDate") String sort,
+                                                                 @RequestParam(defaultValue = "desc") String direction) {
         return ResponseEntity.ok(reportService.getUnreturnedBooks(page, size, sort, direction));
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
+    @GetMapping("/report/expired-books")
+    public ResponseEntity<Page<BookResponse>> getExpiredBooks(@RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "20") int size,
+                                                              @RequestParam(defaultValue = "expireDate") String sort,
+                                                              @RequestParam(defaultValue = "desc") String direction) {
+        return ResponseEntity.ok(reportService.getExpiredBooks(page, size, sort, direction));
     }
 
 
