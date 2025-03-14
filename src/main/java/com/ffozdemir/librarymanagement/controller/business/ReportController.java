@@ -17,8 +17,7 @@ public class ReportController {
     private final ReportService reportService;
 
     @PreAuthorize("hasAnyAuthority('Admin', 'Staff')")
-    @RequestMapping("/report")
-    @GetMapping("")
+    @GetMapping("/report")
     public ResponseEntity<ReportResponse> getReport() {
         return ResponseEntity.ok(reportService.getReport());
     }
