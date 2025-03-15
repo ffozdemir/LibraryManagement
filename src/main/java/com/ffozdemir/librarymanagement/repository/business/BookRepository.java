@@ -15,21 +15,19 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     boolean existsByIsbn(String isbn);
 
+    Page<Book> findAllByCategoryIdAndNameContainingIgnoreCase(Long categoryId, String name, Pageable pageable);
 
-    Page<Book> findAllByCategoryId(Long categoryId, Pageable pageable);
+    Page<Book> findAllByCategoryIdAndNameContainingIgnoreCaseAndActiveTrue(Long categoryId, String name, Pageable pageable);
 
-    Page<Book> findAllByCategoryIdAndActiveTrue(Long categoryId, boolean b, Pageable pageable);
+    Page<Book> findAllByAuthorIdAndNameContainingIgnoreCase(Long authorId, String name, Pageable pageable);
 
-    Page<Book> findAllByAuthorId(Long authorId, Pageable pageable);
+    Page<Book> findAllByAuthorIdAndNameContainingIgnoreCaseAndActiveTrue(Long authorId, String name, Pageable pageable);
 
-    Page<Book> findAllByAuthorIdAndActiveTrue(Long authorId, boolean b, Pageable pageable);
+    Page<Book> findAllByPublisherIdAndNameContainingIgnoreCase(Long publisherId, String name, Pageable pageable);
 
-    Page<Book> findAllByPublisherId(Long publisherId, Pageable pageable);
+    Page<Book> findAllByPublisherIdAndNameContainingIgnoreCaseAndActiveTrue(Long publisherId, String name, Pageable pageable);
 
-    Page<Book> findAllByPublisherIdAndActiveTrue(Long publisherId, boolean b, Pageable pageable);
-
-
-    Page<Book> findAllByNameContainingOrAuthorNameContainingOrIsbnContainingOrPublisherNameContainingIgnoreCase(String name, String authorName, String isbn, String publisherName, Pageable pageable);
+    Page<Book> findAllByNameContainingIgnoreCaseOrAuthorNameContainingIgnoreCaseOrIsbnContainingIgnoreCaseOrPublisherNameContainingIgnoreCase(String name, String authorName, String isbn, String publisherName, Pageable pageable);
 
     Page<Book> findAllByNameContainingOrAuthorNameContainingOrIsbnContainingOrPublisherNameContainingIgnoreCaseAndActiveTrue(String name, String authorName, String isbn, String publisherName, boolean active, Pageable pageable);
 
@@ -48,4 +46,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT DISTINCT b FROM Book b JOIN Loan l ON b.id = l.book.id WHERE l.expireDate < :now and l.returnDate is null")
     Page<Book> findAllByExpireDateBeforeAndNotReturned(LocalDateTime now, Pageable pageable);
+
+
 }

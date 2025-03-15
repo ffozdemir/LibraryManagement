@@ -37,13 +37,13 @@ public class Book {
 	private Category category;
 
 	@Column(nullable = false)
-	private boolean loanable = true;
+	private boolean loanable;
 
 	@Column(nullable = false)
 	private String shelfCode;
 
 	@Column(nullable = false)
-	private boolean active = true;
+	private boolean active;
 
 	@Column(nullable = false)
 	private boolean featured = false;
@@ -57,6 +57,9 @@ public class Book {
 	@PrePersist
 	private void setCreateDate() {
 		this.createDate = LocalDateTime.now();
+		this.active = true;
+		this.loanable = true;
+		this.builtIn = false;
 	}
 
 

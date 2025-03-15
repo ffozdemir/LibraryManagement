@@ -28,9 +28,6 @@ import org.springframework.stereotype.Service;
 public class BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
-    private final AuthorService authorService;
-    private final PublisherService publisherService;
-    private final CategoryService categoryService;
     private final MethodHelper methodHelper;
     private final PageableHelper pageableHelper;
 
@@ -92,7 +89,7 @@ public class BookService {
             throw new BadRequestException(ErrorMessages.BOOK_SEARCH_PARAMETERS_NOT_PROVIDED);
         }
         Pageable pageable = pageableHelper.getPageable(page, size, sortBy, type);
-        String email = httpServletRequest.getHeader("email");
+        String email = (String) httpServletRequest.getAttribute("email");
         User user = methodHelper.loadUserByEmail(email);
         boolean isAdmin = user.getRole().getRoleType().equals(RoleType.ADMIN);
 
@@ -115,19 +112,21 @@ public class BookService {
     private Page<Book> getBooksBasedOnParameters(String q, Long categoryId, Long authorId, Long publisherId, Pageable pageable, boolean isAdmin) {
         if (categoryId != null) {
             return isAdmin
-                    ? bookRepository.findAllByCategoryId(categoryId, pageable)
-                    : bookRepository.findAllByCategoryIdAndActiveTrue(categoryId, true, pageable);
+                    ? bookRepository.findAllByCategoryIdAndNameContainingIgnoreCase(categoryId, q, pageable)
+                    : bookRepository.findAllByCategoryIdAndNameContainingIgnoreCaseAndActiveTrue(categoryId, q,
+                    pageable);
         } else if (authorId != null) {
             return isAdmin
-                    ? bookRepository.findAllByAuthorId(authorId, pageable)
-                    : bookRepository.findAllByAuthorIdAndActiveTrue(authorId, true, pageable);
+                    ? bookRepository.findAllByAuthorIdAndNameContainingIgnoreCase(authorId, q, pageable)
+                    : bookRepository.findAllByAuthorIdAndNameContainingIgnoreCaseAndActiveTrue(authorId, q, pageable);
         } else if (publisherId != null) {
             return isAdmin
-                    ? bookRepository.findAllByPublisherId(publisherId, pageable)
-                    : bookRepository.findAllByPublisherIdAndActiveTrue(publisherId, true, pageable);
+                    ? bookRepository.findAllByPublisherIdAndNameContainingIgnoreCase(publisherId, q, pageable)
+                    : bookRepository.findAllByPublisherIdAndNameContainingIgnoreCaseAndActiveTrue(publisherId, q,
+                    pageable);
         } else {
             return isAdmin
-                    ? bookRepository.findAllByNameContainingOrAuthorNameContainingOrIsbnContainingOrPublisherNameContainingIgnoreCase(q, q, q, q, pageable)
+                    ? bookRepository.findAllByNameContainingIgnoreCaseOrAuthorNameContainingIgnoreCaseOrIsbnContainingIgnoreCaseOrPublisherNameContainingIgnoreCase(q, q, q, q, pageable)
                     : bookRepository.findAllByNameContainingOrAuthorNameContainingOrIsbnContainingOrPublisherNameContainingIgnoreCaseAndActiveTrue(q, q, q, q, true, pageable);
         }
     }
