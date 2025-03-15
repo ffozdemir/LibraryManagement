@@ -31,9 +31,9 @@ public class UserController {
     @GetMapping("/user/loans")
     public ResponseEntity<Page<LoanResponseForMember>> getAllUserLoans(HttpServletRequest httpServletRequest,
                                                                        @RequestParam(defaultValue = "0") int page,
-                                                                       @RequestParam(defaultValue = "10") int size,
-                                                                       @RequestParam(defaultValue = "id") String sort,
-                                                                       @RequestParam(defaultValue = "asc") String direction) {
+                                                                       @RequestParam(defaultValue = "20") int size,
+                                                                       @RequestParam(defaultValue = "createDate") String sort,
+                                                                       @RequestParam(defaultValue = "desc") String direction) {
         return ResponseEntity.ok(userService.getAllUserLoans(httpServletRequest, page, size, sort, direction));
     }
 
@@ -41,9 +41,9 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<Page<UserResponse>> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDirection) {
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "createDate") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection) {
         return ResponseEntity.ok(userService.getAllUsers(page, size, sortBy, sortDirection));
     }
 

@@ -32,7 +32,10 @@ public class CategoryController {
 
     @PreAuthorize("hasAnyAuthority('Admin', 'Staff', 'Member')")
     @GetMapping("/categories")
-    public ResponseEntity<Page<CategoryResponse>> getAllCategories(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sort, @RequestParam(defaultValue = "asc") String direction) {
+    public ResponseEntity<Page<CategoryResponse>> getAllCategories(@RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "20") int size,
+                                                                   @RequestParam(defaultValue = "name") String sort,
+                                                                   @RequestParam(defaultValue = "asc") String direction) {
         return ResponseEntity.ok(categoryService.getAllCategories(page, size, sort, direction));
     }
 

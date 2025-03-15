@@ -31,9 +31,9 @@ public class LoanController {
     @GetMapping("/loans")
     public ResponseEntity<Page<LoanResponseForMember>> getAllLoanResponseForAuthMember(HttpServletRequest httpServletRequest,
                                                                                        @RequestParam(defaultValue = "0") int page,
-                                                                                       @RequestParam(defaultValue = "10") int size,
-                                                                                       @RequestParam(defaultValue = "id") String sort,
-                                                                                       @RequestParam(defaultValue = "asc") String direction) {
+                                                                                       @RequestParam(defaultValue = "20") int size,
+                                                                                       @RequestParam(defaultValue = "loanDate") String sort,
+                                                                                       @RequestParam(defaultValue = "desc") String direction) {
         return ResponseEntity.ok(loanService.getAllLoanResponseForAuthMember(httpServletRequest, page, size, sort, direction));
     }
 
@@ -41,9 +41,9 @@ public class LoanController {
     @GetMapping("/loans/user/{id}")
     public ResponseEntity<Page<LoanResponseForAdminAndStaff>> getAllLoanResponseByUserId(@PathVariable Long id,
                                                                                          @RequestParam(defaultValue = "0") int page,
-                                                                                         @RequestParam(defaultValue = "10") int size,
-                                                                                         @RequestParam(defaultValue = "id") String sort,
-                                                                                         @RequestParam(defaultValue = "asc") String direction) {
+                                                                                         @RequestParam(defaultValue = "20") int size,
+                                                                                         @RequestParam(defaultValue = "loanDate") String sort,
+                                                                                         @RequestParam(defaultValue = "desc") String direction) {
         return ResponseEntity.ok(loanService.getAllLoanResponseForAdminAndStaffByUserId(id, page, size, sort, direction));
     }
 
@@ -51,9 +51,9 @@ public class LoanController {
     @GetMapping("/loans/book/{id}")
     public ResponseEntity<Page<LoanResponseForAdminAndStaff>> getAllLoanResponseForAdminAndStaffByBookId(@PathVariable Long id,
                                                                                   @RequestParam(defaultValue = "0") int page,
-                                                                                  @RequestParam(defaultValue = "10") int size,
-                                                                                  @RequestParam(defaultValue = "id") String sort,
-                                                                                  @RequestParam(defaultValue = "asc") String direction) {
+                                                                                  @RequestParam(defaultValue = "20") int size,
+                                                                                  @RequestParam(defaultValue = "loanDate") String sort,
+                                                                                  @RequestParam(defaultValue = "desc") String direction) {
         return ResponseEntity.ok(loanService.getAllLoanResponseForAdminAndStaffByBookId(id, page, size, sort, direction));
     }
 

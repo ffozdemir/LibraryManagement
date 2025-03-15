@@ -33,8 +33,8 @@ public class PublisherController {
     @GetMapping("/publishers")
     public ResponseEntity<Page<PublisherResponse>> getAllPublishers(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "name") String sort,
             @RequestParam(defaultValue = "asc") String direction) {
         return ResponseEntity.ok(publisherService.getAllPublishers(page, size, sort, direction));
     }
