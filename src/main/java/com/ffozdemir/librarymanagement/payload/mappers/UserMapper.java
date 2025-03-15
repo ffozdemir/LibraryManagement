@@ -62,7 +62,7 @@ public class UserMapper {
         try {
             return roleService.getRoleByName(RoleType.valueOf(roleType.toUpperCase()));
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid Role Type " + roleType);
+            throw new BadRequestException(String.format(ErrorMessages.INVALID_ROLE_TYPE, roleType));
         }
     }
 

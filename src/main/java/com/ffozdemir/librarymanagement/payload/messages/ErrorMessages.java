@@ -43,6 +43,7 @@ public class ErrorMessages {
     public static final String LOAN_NOT_BELONG_TO_USER = "Loan does not belong to user with id %s";
     public static final String BOOK_NOT_AVAILABLE = "Book with id %s is not available for loan";
     public static final String USER_BORROW_LIMIT_EXCEEDED = "User borrow limit exceeded";
+    public static final String INVALID_ROLE_TYPE = "Role type is not valid : %s";
 
     private ErrorMessages() {
     }
