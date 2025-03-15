@@ -22,6 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Long countByRole_RoleType(RoleType roleRoleType);
 
-	@Query(value = "SELECT u FROM User u JOIN Loan l where u.id = l.user.id GROUP BY u.id ORDER BY COUNT(l) DESC")
+	@Query(value = "SELECT u FROM User u JOIN Loan l on u.id = l.user.id GROUP BY u.id ORDER BY COUNT(l) DESC")
     Page<User> findAllMostBorrowers(Pageable pageable);
 }

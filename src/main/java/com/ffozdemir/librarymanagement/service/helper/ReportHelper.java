@@ -82,7 +82,7 @@ public class ReportHelper {
     }
 
     public Page<UserResponse> getMostBorrowers(int page, int size) {
-        Pageable pageable = pageableHelper.getPageable(page, size, "loanCount", "desc");
+        Pageable pageable = pageableHelper.getPageable(page, size, "id", "desc");
         Page<User> users = userRepository.findAllMostBorrowers(pageable);
         return users.map(userMapper::mapUserToUserResponse);
     }

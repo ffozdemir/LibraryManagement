@@ -39,7 +39,7 @@ public class ReportController {
     @GetMapping("/report/unreturned-books")
     public ResponseEntity<Page<BookResponse>> getUnreturnedBooks(@RequestParam(defaultValue = "0") int page,
                                                                  @RequestParam(defaultValue = "20") int size,
-                                                                 @RequestParam(defaultValue = "expireDate") String sort,
+                                                                 @RequestParam(defaultValue = "createDate") String sort,
                                                                  @RequestParam(defaultValue = "desc") String direction) {
         return ResponseEntity.ok(reportService.getUnreturnedBooks(page, size, sort, direction));
     }
@@ -48,7 +48,7 @@ public class ReportController {
     @GetMapping("/report/expired-books")
     public ResponseEntity<Page<BookResponse>> getExpiredBooks(@RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "20") int size,
-                                                              @RequestParam(defaultValue = "expireDate") String sort,
+                                                              @RequestParam(defaultValue = "createDate") String sort,
                                                               @RequestParam(defaultValue = "desc") String direction) {
         return ResponseEntity.ok(reportService.getExpiredBooks(page, size, sort, direction));
     }
