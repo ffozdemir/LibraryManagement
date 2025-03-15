@@ -35,8 +35,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query(value = "SELECT b.* FROM book b " +
             "JOIN (SELECT book_id, COUNT(book_id) as loan_count FROM loan GROUP BY book_id " +
-            "ORDER BY loan_count DESC LIMIT :amount) l " +
-            "ON b.id = l.book_id",
+            "ORDER BY COUNT(book_id) DESC LIMIT :amount) l " +
+            "ON b.id = l.book_id " +
+            "ORDER BY l.loan_count DESC",
             countQuery = "SELECT COUNT(*) FROM (SELECT book_id FROM loan GROUP BY book_id " +
                     "ORDER BY COUNT(book_id) DESC LIMIT :amount) AS count_query",
             nativeQuery = true)

@@ -64,7 +64,7 @@ public class ReportHelper {
 
 
     public Page<BookResponse> getMostPopularBooks(int amount, int page, int size) {
-        Pageable pageable = pageableHelper.getPageable(page, size, "loanCount", "desc");
+        Pageable pageable = pageableHelper.getPageable(page, size, "loan_count", "desc");
         Page<Book> books = bookRepository.findMostBorrowedBooks(amount, pageable);
         return books.map(bookMapper::bookToBookResponse);
     }
