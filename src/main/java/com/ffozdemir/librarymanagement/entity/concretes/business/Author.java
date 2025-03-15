@@ -24,7 +24,7 @@ public class Author {
 	@Column(nullable = false)
 	private boolean builtIn = false;
 
-	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<Book> books;
 }

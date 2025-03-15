@@ -133,7 +133,7 @@ public class BookService {
 
     public BookResponse deleteBook(Long id) {
         Book book = getBookById(id);
-        if (methodHelper.isBookRelatedToLoan(id)) {
+        if (book.getLoans() != null && !book.getLoans().isEmpty()) {
             throw new BadRequestException(ErrorMessages.BOOK_CANNOT_BE_DELETED);
         }
         bookRepository.delete(book);

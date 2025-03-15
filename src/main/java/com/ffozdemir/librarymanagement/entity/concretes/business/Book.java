@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -53,6 +54,9 @@ public class Book {
 
 	@Column(nullable = false)
 	private boolean builtIn = false;
+
+	@OneToMany(mappedBy = "book", orphanRemoval = true, fetch = FetchType.EAGER)
+	private Set<Loan> loans;
 
 	@PrePersist
 	private void setCreateDate() {
