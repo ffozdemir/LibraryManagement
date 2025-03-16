@@ -1,19 +1,21 @@
 package com.ffozdemir.librarymanagement.service.user;
 
+import com.ffozdemir.librarymanagement.entity.concretes.user.User;
+import com.ffozdemir.librarymanagement.payload.mappers.UserMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.payload.request.authentication.LoginRequest;
+import com.ffozdemir.librarymanagement.payload.request.user.RegisterOrUpdateRequest;
 import com.ffozdemir.librarymanagement.payload.response.authentication.AuthenticationResponse;
-import com.ffozdemir.librarymanagement.repository.user.UserRepository;
+import com.ffozdemir.librarymanagement.payload.response.user.UserResponse;
 import com.ffozdemir.librarymanagement.security.jwt.JwtUtils;
 import com.ffozdemir.librarymanagement.security.service.UserDetailsImpl;
-import com.ffozdemir.librarymanagement.service.helper.MethodHelper;
+import com.ffozdemir.librarymanagement.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -24,26 +26,30 @@ public class AuthenticationService {
 
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final MethodHelper methodHelper;
+    private final UserService userService;
+    private final UniquePropertyValidator uniquePropertyValidator;
+    private final UserMapper userMapper;
 
-    public AuthenticationResponse authenticate(LoginRequest loginRequest) {
+    public AuthenticationResponse authenticate(
+            LoginRequest loginRequest) {
         String email = loginRequest.getEmail();
-        char[] password = loginRequest.getPassword().toCharArray();
+        char[] password = loginRequest.getPassword()
+                .toCharArray();
 
         try {
-            Authentication authentication =
-                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email,
-                            new String(password)));
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, new String(password)));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext()
+                    .setAuthentication(authentication);
 
             String token = jwtUtils.generateJwtToken(authentication);
 
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-            String userRole = userDetails.getAuthorities().iterator().next().getAuthority();
+            String userRole = userDetails.getAuthorities()
+                    .iterator()
+                    .next()
+                    .getAuthority();
 
             return AuthenticationResponse.builder()
                     .token(token)
@@ -56,5 +62,12 @@ public class AuthenticationService {
         } finally {
             Arrays.fill(password, '\0');
         }
+    }
+
+    public UserResponse register(
+            RegisterOrUpdateRequest registerOrUpdateRequest) {
+        uniquePropertyValidator.checkDuplication(registerOrUpdateRequest.getEmail(), registerOrUpdateRequest.getPhone());
+        User userToSave = userMapper.mapRegisterRequestToUser(registerOrUpdateRequest);
+        return userMapper.mapUserToUserResponse(userService.saveUser(userToSave));
     }
 }

@@ -1,9 +1,10 @@
 package com.ffozdemir.librarymanagement.entity.concretes.business;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -23,6 +24,7 @@ public class Author {
 	@Column(nullable = false)
 	private boolean builtIn = false;
 
-	@OneToMany(mappedBy = "author")
-	private LinkedHashSet<Book> books;
+	@OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Set<Book> books;
 }

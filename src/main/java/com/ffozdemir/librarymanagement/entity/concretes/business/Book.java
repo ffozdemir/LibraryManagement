@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class Book {
 	@Column(nullable = false)
 	private String name;
 
-	@Column(nullable = false)
+	@Column(nullable = false , unique = true)
 	private String isbn;
 
 	private int pageCount;
@@ -37,13 +38,13 @@ public class Book {
 	private Category category;
 
 	@Column(nullable = false)
-	private boolean loanable = true;
+	private boolean loanable;
 
 	@Column(nullable = false)
 	private String shelfCode;
 
 	@Column(nullable = false)
-	private boolean active = true;
+	private boolean active;
 
 	@Column(nullable = false)
 	private boolean featured = false;
@@ -54,9 +55,15 @@ public class Book {
 	@Column(nullable = false)
 	private boolean builtIn = false;
 
+	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+	private Set<Loan> loans;
+
 	@PrePersist
 	private void setCreateDate() {
 		this.createDate = LocalDateTime.now();
+		this.active = true;
+		this.loanable = true;
+		this.builtIn = false;
 	}
 
 
