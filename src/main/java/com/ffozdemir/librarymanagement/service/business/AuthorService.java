@@ -25,8 +25,6 @@ public class AuthorService {
     private final PageableHelper pageableHelper;
     private final MethodHelper methodHelper;
 
-
-
     public AuthorResponse getAuthorResponse(Long id) {
         return authorMapper.authorToAuthorResponse(methodHelper.getAuthorById(id));
     }

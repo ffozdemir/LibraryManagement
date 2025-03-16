@@ -8,6 +8,7 @@ import com.ffozdemir.librarymanagement.payload.response.business.BookResponse;
 import com.ffozdemir.librarymanagement.service.helper.MethodHelper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +18,8 @@ public class BookMapper {
     private final AuthorMapper authorMapper;
     private final PublisherMapper publisherMapper;
     private final CategoryMapper categoryMapper;
+
+    @Lazy
     private final MethodHelper methodHelper;
 
     public Book bookRequestToBook(BookRequest bookRequest) {

@@ -22,7 +22,6 @@ public class MethodHelper {
     private final LoanRepository loanRepository;
     private final BookRepository bookRepository;
 
-
     public User loadUserByEmail(
             String email) {
         return userRepository.findByEmail(email)
@@ -54,10 +53,6 @@ public class MethodHelper {
     public Loan getLoanById(Long loanId) {
         return loanRepository.findById(loanId)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(ErrorMessages.LOAN_NOT_FOUND_BY_ID, loanId)));
-    }
-
-    public boolean isBookRelatedToLoan(Long bookId) {
-        return loanRepository.existsByBook_Id((bookId));
     }
 
     public Book getBookIfAvailable(Long bookId) {
@@ -97,6 +92,4 @@ public class MethodHelper {
         }
         return Map.of("bookLimit", bookLimit, "dayLimit", dayLimit);
     }
-
-
 }
