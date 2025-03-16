@@ -18,4 +18,13 @@ public class CreateUserRequest extends BaseUserRequest {
     @NotBlank(message = "Please enter role for the user")
     private String roleType;
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

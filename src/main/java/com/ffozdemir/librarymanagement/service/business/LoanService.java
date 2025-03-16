@@ -27,6 +27,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class LoanService {
 
     private final LoanRepository loanRepository;

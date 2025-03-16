@@ -2,7 +2,6 @@ package com.ffozdemir.librarymanagement.service.user;
 
 import com.ffozdemir.librarymanagement.entity.concretes.user.User;
 import com.ffozdemir.librarymanagement.entity.enums.RoleType;
-import com.ffozdemir.librarymanagement.payload.mappers.LoanMapper;
 import com.ffozdemir.librarymanagement.payload.mappers.UserMapper;
 import com.ffozdemir.librarymanagement.payload.messages.ErrorMessages;
 import com.ffozdemir.librarymanagement.payload.request.user.CreateUserRequest;
@@ -31,7 +30,6 @@ public class UserService {
     private final MethodHelper methodHelper;
     private final PageableHelper pageableHelper;
     private final LoanService loanService;
-    private final LoanMapper loanMapper;
     private static final String ATTRIBUTE_EMAIL = "email";
 
 

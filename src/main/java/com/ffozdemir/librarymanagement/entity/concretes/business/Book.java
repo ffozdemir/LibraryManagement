@@ -55,7 +55,7 @@ public class Book {
 	@Column(nullable = false)
 	private boolean builtIn = false;
 
-	@OneToMany(mappedBy = "book", orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
 	private Set<Loan> loans;
 
 	@PrePersist
