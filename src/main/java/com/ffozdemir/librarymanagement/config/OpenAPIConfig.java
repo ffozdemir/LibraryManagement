@@ -8,8 +8,21 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@OpenAPIDefinition(info = @Info(title = "Library Management API", version = "1.0", description = "API documentation for Library Management System"), security = @SecurityRequirement(name = "Bearer"))
-@SecurityScheme(name = "Bearer Authentication", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT", description = "Enter 'Bearer' [space] and then your token in the text input below.\n\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"")
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Library Management API",
+                version = "1.0",
+                description = "API documentation for Library Management System"
+        ),
+        security = @SecurityRequirement(name = "Bearer Authentication")
+)
+@SecurityScheme(
+        name = "Bearer Authentication",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT",
+        description = "JWT token ile kimlik doğrulama. 'Bearer' [boşluk] ve ardından token'ı girin.\n\nÖrnek: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\""
+)
 public class OpenAPIConfig {
 
 }
