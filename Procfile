@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -jar -Dspring.profiles.active=prod target/librarymanagement-0.0.1-SNAPSHOT.jar
